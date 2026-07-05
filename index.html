@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefly Ball · 呼吸光球</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #FCFAF8 0%, #f0d4b5 100%);
+            font-family: sans-serif;
+        }
+
+        .ball-wrapper {
+            position: relative;
+            width: 212px;
+            height: 212px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: breathe-scale 6s ease-in-out infinite alternate;
+        }
+
+        .glow-ring {
+            position: absolute;
+            width: 212px;
+            height: 212px;
+            background: radial-gradient(circle, rgba(255,255,255,0.72) 20%, rgba(255,255,255,0) 80%);
+            filter: blur(16px);
+            border-radius: 50%;
+            animation: glow-brightness 6s ease-in-out infinite alternate;
+        }
+
+        .glow-ball-inner {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 35%, #ffe4b5, #ffb07c 70%, #f0976b 100%);
+            box-shadow: 0 0 30px rgba(255, 150, 100, 0.3);
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .highlight {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .highlight.top-left { width: 55px; height: 35px; top: 12px; left: 20px; background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.7) 0%, transparent 70%); transform: rotate(-30deg); }
+        .highlight.bottom-right { width: 25px; height: 15px; bottom: 25px; right: 25px; background: radial-gradient(circle at 100% 100%, rgba(255,200,180,0.65) 0%, transparent 60%); transform: rotate(-45deg); }
+
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: #ffffff;
+            opacity: 0.3;
+            animation: sparkle infinite alternate;
+        }
+        @keyframes sparkle {
+            0% { opacity: 0.15; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes breathe-scale {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(0.95); }
+        }
+        @keyframes glow-brightness {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ball-wrapper">
+        <div class="glow-ring"></div>
+        <div class="glow-ball-inner">
+            <div class="highlight top-left"></div>
+            <div class="highlight bottom-right"></div>
+            <!-- 星星容器，JS会在这里动态生成星星 -->
+        </div>
+    </div>
+
+    <script>
+        // 生成星星逻辑
+        const ballInner = document.querySelector('.glow-ball-inner');
+        const starCount = 20;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = 1 + Math.random() * 2;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = (2 + Math.random() * 0.8) + 's';
+            star.style.animationDelay = Math.random() * 2.8 + 's';
+            ballInner.appendChild(star);
+        }
+    </script>
+</body>
+</html>
